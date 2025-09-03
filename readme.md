@@ -90,6 +90,7 @@ src/
 - **Java 17+**
 - **Maven 3.6+**
 - **Git**
+- **SQL Server** (opcional - pode usar H2 para testes)
 
 ### 1. Clone o repositório
 ```bash
@@ -97,7 +98,13 @@ git clone https://github.com/RebeckaNigro/MVP-Clientes.git
 cd listadeclientes
 ```
 
-### 2. Execute a aplicação
+### 2. Configure o banco de dados
+**IMPORTANTE**: Antes de executar, configure o banco de dados:
+
+- **Para SQL Server**: Certifique-se de que está rodando e crie o banco `Clientes_estagio`
+- **Para H2**: Não precisa configurar nada, será criado automaticamente
+
+### 3. Execute a aplicação
 ```bash
 # Usando Maven Wrapper (recomendado)
 ./mvnw spring-boot:run
@@ -106,7 +113,7 @@ cd listadeclientes
 mvn spring-boot:run
 ```
 
-### 3. Acesse a aplicação
+### 4. Acesse a aplicação
 - **Interface Web**: http://localhost:8081
 - **API Swagger**: http://localhost:8081/swagger-ui.html
 - **H2 Console**: http://localhost:8081/h2-console
@@ -143,14 +150,42 @@ A interface foi desenvolvida com foco na **experiência do usuário**, utilizand
 ## 🔧 Configurações
 
 ### Banco de Dados
-Por padrão, a aplicação usa **H2** (em memória). Para usar **SQL Server**:
+
+A aplicação está configurada para usar **SQL Server** por padrão. Você tem duas opções:
+
+#### Opção 1: SQL Server (Configuração Atual)
+A aplicação já está configurada para usar SQL Server. Certifique-se de que:
+
+1. **SQL Server está instalado e rodando** na porta 1433
+2. **Crie o banco de dados**:
+   ```sql
+   CREATE DATABASE [Clientes_estagio]
+   ```
+3. **Configure as credenciais** (já configuradas no projeto):
+   ```properties
+   # application.properties
+   spring.datasource.url=jdbc:sqlserver://localhost:1433;databaseName=Clientes_estagio;encrypt=true;trustServerCertificate=true
+   spring.datasource.username=sa
+   spring.datasource.password=Ch@ll3ng3
+   spring.datasource.driver-class-name=com.microsoft.sqlserver.jdbc.SQLServerDriver
+   spring.jpa.hibernate.ddl-auto=update
+   spring.jpa.show-sql=true
+   spring.jpa.database-platform=org.hibernate.dialect.SQLServerDialect
+   ```
+
+#### Opção 2: H2 (Para Testes Rápidos)
+Se preferir usar H2 (banco em memória), comente as linhas do SQL Server e descomente:
 
 ```properties
 # application.properties
-spring.datasource.url=jdbc:sqlserver://localhost:1433;databaseName=[Clientes_estagio]
+# Comentar/remover as linhas do SQL Server acima e usar:
+spring.datasource.url=jdbc:h2:mem:testdb
+spring.datasource.driverClassName=org.h2.Driver
 spring.datasource.username=sa
-spring.datasource.password=Ch@ll3ng3
-spring.jpa.hibernate.ddl-auto=update
+spring.datasource.password=
+spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+spring.h2.console.enabled=true
+spring.h2.console.path=/h2-console
 ```
 
 ### Segurança
@@ -158,6 +193,34 @@ A aplicação inclui **Spring Security** configurado para:
 - Proteção CSRF
 - Autenticação JWT para API
 - Configuração de CORS
+
+## 🚨 Troubleshooting
+
+### Problemas Comuns
+
+#### Erro de Conexão com SQL Server
+```
+com.microsoft.sqlserver.jdbc.SQLServerException: Login failed for user 'sa'
+```
+**Solução**: 
+1. Verifique se o SQL Server está rodando
+2. Confirme se o usuário `sa` está habilitado
+3. Verifique se a senha `Ch@ll3ng3` está correta
+4. Certifique-se de que o banco `Clientes_estagio` existe
+
+#### Erro de Porta em Uso
+```
+Port 8081 was already in use
+```
+**Solução**: 
+1. Pare outros serviços na porta 8081
+2. Ou altere a porta no `application.properties`: `server.port=8082`
+
+#### Problema com H2 Console
+Se estiver usando H2 e não conseguir acessar o console:
+1. Verifique se `spring.h2.console.enabled=true` está no `application.properties`
+2. Acesse: http://localhost:8081/h2-console
+3. Use as credenciais: JDBC URL: `jdbc:h2:mem:testdb`, User: `sa`, Password: (vazio)
 
 
 ## 📈 Próximos Passos

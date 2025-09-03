@@ -31,3 +31,21 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Bootstrap - Arquivos não utilizados ###
+# Excluir arquivos CSS não utilizados (mantendo apenas bootstrap.min.css)
+src/main/resources/static/bootstrap-5.2.2-dist/css/bootstrap.css
+src/main/resources/static/bootstrap-5.2.2-dist/css/bootstrap.css.map
+src/main/resources/static/bootstrap-5.2.2-dist/css/bootstrap.rtl.css
+src/main/resources/static/bootstrap-5.2.2-dist/css/bootstrap.rtl.css.map
+src/main/resources/static/bootstrap-5.2.2-dist/css/bootstrap.rtl.min.css
+src/main/resources/static/bootstrap-5.2.2-dist/css/bootstrap.rtl.min.css.map
+src/main/resources/static/bootstrap-5.2.2-dist/css/bootstrap-grid.*
+src/main/resources/static/bootstrap-5.2.2-dist/css/bootstrap-reboot.*
+src/main/resources/static/bootstrap-5.2.2-dist/css/bootstrap-utilities.*
+
+# Excluir arquivos JS não utilizados (mantendo apenas bootstrap.min.js)
+src/main/resources/static/bootstrap-5.2.2-dist/js/bootstrap.js
+src/main/resources/static/bootstrap-5.2.2-dist/js/bootstrap.js.map
+src/main/resources/static/bootstrap-5.2.2-dist/js/bootstrap.bundle.*
+src/main/resources/static/bootstrap-5.2.2-dist/js/bootstrap.esm.*

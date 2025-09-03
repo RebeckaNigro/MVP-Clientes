@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv='Content-Type' content='text/html; charset=UTF-8' />
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<title>Lista de Clientes</title>
+
+<link rel="stylesheet" th:href="@{/bootstrap-5.2.2-dist/css/bootstrap.min.css}">
+<script th:src="@{/jquery-3.6.1-dist/jquery-3.6.1.min.js}"></script>
+<script th:src="@{/bootstrap-5.2.2-dist/js/bootstrap.min.js}"></script>
+
+</head>
+<body>
+<div class="container">
+  <div class="row">
+  	
+    <div class="col">
+    	<h1>Lista de Clientes</h1>
+    	
+    	<!-- Mensagens de sucesso/erro -->
+    	<div th:if="${mensagem}" class="alert alert-success alert-dismissible fade show" role="alert">
+    		<span th:text="${mensagem}"></span>
+    		<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    	</div>
+    	
+	 		<div class="row mb-3">
+            	<div class="col-md-6">
+                	<form th:action="@{/cliente/pesquisar}" method="get" class="d-flex">
+                    	<input type="text" name="q" class="form-control me-2" placeholder="Buscar por nome, CPF, email..." th:value="${q}">
+                    	<button type="submit" class="btn btn-primary">Pesquisar</button>
+                	</form>
+            	</div>
+        	</div>
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th>Nome</th>
+				<th>Cpf</th>
+				<th>Nascimento</th>
+				<th>Email</th>
+				<th>Idade</th>
+				<th>Ações</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:if="${clientes.empty}">
+				<td colspan="6">Sem Clientes</td>
+			</tr>
+			<tr th:each="cliente : ${clientes}">
+				<td><span th:text="${cliente.nome}"> Nome </span></td>
+				<td><span th:text="${cliente.cpf}"> Cpf </span></td>
+				<td><span th:text="${#temporals.format(cliente.dataNascimento, 'dd/MM/yyyy')}"> Nascimento </span></td>
+				<td><span th:text="${cliente.email}"> Email </span></td>
+				<td><span th:text="${cliente.idade}"> Idade </span></td>
+
+            <td>
+                <a class="btn btn-outline-primary btn-sm me-2" 
+                   th:href="@{/cliente/editar/{id}(id=${cliente.id})}">
+                   Editar</a>
+                <form th:action="@{/cliente/deletar/{id}(id=${cliente.id})}" method="post" style="display: inline;" onsubmit="return confirm('Deseja remover este cliente?');">
+					<button type="submit" class="btn btn-outline-danger btn-sm">Excluir</button>
+				</form>
+            </td>
+
+			</tr>
+		</tbody>
+	</table>    
+    </div>
+    <a class="btn btn-secondary" th:href="@{/}">Voltar</a>
+  </div>
+</div>
+
+	
+</body>
+</html>

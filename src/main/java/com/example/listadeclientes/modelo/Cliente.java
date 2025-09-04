@@ -1,25 +1,29 @@
 package com.example.listadeclientes.modelo;
 
-import java.util.Date;
 import java.time.LocalDate;
 import java.time.Period;
 import javax.validation.constraints.NotNull;
 import org.springframework.format.annotation.DateTimeFormat;
-import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.info.Info;
 
-
+@OpenAPIDefinition(
+    	info = @Info(
+        title = "API CLIENTE",
+        version = "1.0",
+        description = "API PARA GERENCIAR CLIENTES PESSOA FÍSICA"
+    	)
+)
 @Entity
 public class Cliente {
 	@Id
@@ -37,7 +41,9 @@ public class Cliente {
 	@NotNull(message = "A data de nascimento deve ser informada")
 	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
 		private LocalDate dataNascimento;
-		
+
+	
+	@Email(message = "Digite um email válido", regexp = "^[a-zA-Z0-9_!#$%&'*+/=?`{|}~^.-]+@[a-zA-Z0-9.-]+$")
 	@NotEmpty(message = "O email deve ser informada")
 	@Size(min = 3, message = "email deve ter no mínimo 3 caracteres")
 	private String email;

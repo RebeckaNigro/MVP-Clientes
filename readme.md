@@ -216,11 +216,6 @@ Port 8081 was already in use
 1. Pare outros serviços na porta 8081
 2. Ou altere a porta no `application.properties`: `server.port=8082`
 
-#### Problema com H2 Console
-Se estiver usando H2 e não conseguir acessar o console:
-1. Verifique se `spring.h2.console.enabled=true` está no `application.properties`
-2. Acesse: http://localhost:8081/h2-console
-3. Use as credenciais: JDBC URL: `jdbc:h2:mem:testdb`, User: `sa`, Password: (vazio)
 
 
 ## 📈 Próximos Passos
